@@ -1,0 +1,29 @@
+// Predefined Break-points
+$mobile: 600px
+$tablet: 900px
+$tabletLG: 1150px
+$monitorHD: 1400px
+$monitorUHD: 2100px
+
+@function translate-media-condition($c) 
+    $condMap: (">mobile": "(min-width: #{$mobile + 1})","<=mobile": "(max-width: #{$mobile})", 		">tablet": "(min-width: #{$tablet + 1})","<=tablet": "(max-width: #{$tablet})",">tabletLG": "(min-width: #{$tabletLG + 1})","<=tabletLG": "(max-width: #{$tabletLG})",">monitorHD": "(min-width: #{$monitorHD + 1})","<=monitorHD": "(max-width: #{$monitorHD})",">monitorUHD": "(min-width: #{$monitorUHD + 1})","<=monitorUHD": "(max-width: #{$monitorUHD})")
+    @return map-get($condMap, $c)
+
+// The media mixin
+@mixin media($args...)
+    $query: ""
+    @each $arg in $args 
+        $op: ""
+        @if ( $query != "" ) 
+            $op: " and "
+        $query: $query + $op + translate-media-condition($arg)
+    @media #{$query}
+        @content
+
+@mixin mobile
+	@media (max-width: #{mobile})
+        @content
+
+@mixin tablet
+	@media (max-width: #{tablet})
+        @content
